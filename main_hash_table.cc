@@ -17,11 +17,14 @@
 #include "abbusqueda.h"
 #include "nif.h"
 #include "nodob.h"
+#include "nodoavl.h"
 
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <ctime>
+
+#include "avl.h"
 
 int main(int argc, char *argv[]) {
   parameters options = parse_args(argc, argv);
@@ -34,7 +37,11 @@ int main(int argc, char *argv[]) {
     case 1:
       arbol = new ABB<Nif>();
       break;
+    case 2:
+      arbol = new AVL<Nif>();
+      break;
   }
+
 
   Nif* nif;
   long clave;

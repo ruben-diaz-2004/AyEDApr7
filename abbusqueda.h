@@ -20,6 +20,7 @@
 template <class key>
 class ABB: public AB<key> {
   public:
+  ABB() : AB<key>() {}
   bool Buscar(const key& clave) { return BuscarRama(this->raiz_, clave) != NULL; }
   NodoB<key>* BuscarRama(NodoB<key>* nodo, const key& clave);
   bool Insertar(const key& clave);

@@ -29,6 +29,7 @@ parameters parse_args(int argc, char* argv[]) {
     if (*it == "-ab") {
       if (*++it == "abe") options.tipo_de_arbol = 0;
       else if (*it == "abb") options.tipo_de_arbol = 1;
+      else options.tipo_de_arbol = 2;
     } 
     else if (*it == "-init") {
       *++it;
