@@ -18,13 +18,15 @@
 
 #include <iostream>
 #include "nodoavl.h"
+#include <queue>
+
 
 template <class key> class NodoAVL;
 
 template <class key>
 class AVL : public ABB<key> {
   public:
-  AVL() : ABB<key>() {}
+  AVL(bool trace) : ABB<key>(), trace_(trace) {}
   bool Insertar(const key& clave);
   void Inserta_bal(NodoAVL<key>* &nodo, NodoAVL<key>* nuevo, bool& crece);
   void insert_re_balancea_izda(NodoAVL<key>* &nodo, bool& crece);
@@ -36,6 +38,9 @@ class AVL : public ABB<key> {
   NodoAVL<key>*& root() {
     return reinterpret_cast<NodoAVL<key>*&>(ABB<key>::raiz_);
   }
+  void ImprimeNiveles(std::ostream& os);
+  private:
+  bool trace_;
 };
 
 template <class key>
@@ -55,7 +60,7 @@ void AVL<key>::Inserta_bal(NodoAVL<key>* &nodo, NodoAVL<key>* nuevo, bool& crece
     nodo = nuevo;
     crece = true;
   }
-  else if (nuevo->dato_ > nodo->dato_) {
+  else if (nuevo->dato_ < nodo->dato_) {
     Inserta_bal(nodo->left(), nuevo, crece);
     if (crece) insert_re_balancea_izda(nodo, crece);
   }
@@ -78,7 +83,10 @@ void AVL<key>::insert_re_balancea_izda(NodoAVL<key>* &nodo, bool& crece) {
       nodo->bal_ = 1;
       break;
     case 1:
-    nodo->bal_ = 2;
+      nodo->bal_ = 2;
+      if (trace_) {
+        std::cout << "Desbalanceo:\n";
+      }
       NodoAVL<key>* nodo1 = nodo->left();
       if (nodo1->bal_ == 1) {
         rotacion_II(nodo);
@@ -105,6 +113,9 @@ void AVL<key>::insert_re_balancea_dcha(NodoAVL<key>* &nodo, bool& crece) {
       break;
     case -1:
       nodo->bal_ = -2;
+      if (trace_) {
+        std::cout << "Desbalanceo:\n";
+      }
       NodoAVL<key>* nodo1 = nodo->right();
       if (nodo1->bal_ == -1) {
         rotacion_DD(nodo);
@@ -121,6 +132,9 @@ void AVL<key>::insert_re_balancea_dcha(NodoAVL<key>* &nodo, bool& crece) {
 
 template <class key>
 void AVL<key>::rotacion_II(NodoAVL<key>* &nodo) {
+  if (trace_) {
+    std::cout << "Rotación II en " << "[" << nodo->dato_ << "]" << std::endl;
+  }
   NodoAVL<key>* nodo1 = nodo->left();
   nodo->left() = nodo1->right();
   nodo1->right() = nodo;
@@ -139,6 +153,9 @@ void AVL<key>::rotacion_II(NodoAVL<key>* &nodo) {
 
 template <class key>
 void AVL<key>::rotacion_DD(NodoAVL<key>* &nodo) {
+  if (trace_) {
+    std::cout << "Rotación DD en " << "[" << nodo->dato_ << "]" << std::endl;
+  }
   NodoAVL<key>* nodo1 = nodo->right();
   nodo->right() = nodo1->left();
   nodo1->left() = nodo;
@@ -157,6 +174,9 @@ void AVL<key>::rotacion_DD(NodoAVL<key>* &nodo) {
 
 template <class key>
 void AVL<key>::rotacion_ID(NodoAVL<key>* &nodo) {
+  if (trace_) {
+    std::cout << "Rotación ID en " << "[" << nodo->dato_ << "]" << std::endl;
+  }
   NodoAVL<key>* nodo1 = nodo->left();
   NodoAVL<key>* nodo2 = nodo1->right();
   nodo->left() = nodo2->right();
@@ -184,6 +204,9 @@ void AVL<key>::rotacion_ID(NodoAVL<key>* &nodo) {
 
 template <class key>
 void AVL<key>::rotacion_DI(NodoAVL<key>* &nodo) {
+  if (trace_) {
+    std::cout << "Rotación DI en " << "[" << nodo->dato_ << "]" << std::endl;
+  }
   NodoAVL<key>* nodo1 = nodo->right();
   NodoAVL<key>* nodo2 = nodo1->left();
   nodo->right() = nodo2->left();
@@ -207,6 +230,36 @@ void AVL<key>::rotacion_DI(NodoAVL<key>* &nodo) {
   nodo = nodo2;
 }
 
+
+
+template <class key>
+void AVL<key>::ImprimeNiveles(std::ostream& os) {
+  std::queue<std::pair<NodoAVL<key>*, int>> cola;
+  NodoAVL<key>* nodo_actual;
+  NodoAVL<key>* raiz = this->root();
+  int nivel, nivel_actual = 0;
+  cola.push(std::make_pair(raiz, 0));
+  os << "Nivel " << nivel_actual << ": ";
+  while (!cola.empty()) {
+    nodo_actual = cola.front().first;
+    nivel = cola.front().second;
+    cola.pop();
+    if (nivel > nivel_actual) {
+      os << std::endl;
+      os << "Nivel " << nivel << ": ";
+      nivel_actual = nivel;
+    }
+    if (nodo_actual != NULL) {
+      os << "[" << nodo_actual->dato_;
+      if (trace_) os << "(" << nodo_actual->bal_ << ")";
+      std::cout << "] ";
+      cola.push(std::make_pair(nodo_actual->left(), nivel + 1));
+      cola.push(std::make_pair(nodo_actual->right(), nivel + 1));
+    } else {
+      os << "[.] ";
+    }
+  }
+}
 
 
 #endif

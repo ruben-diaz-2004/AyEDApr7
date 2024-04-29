@@ -20,6 +20,7 @@ struct parameters {
   int init_code;
   std::string file_name;
   int numero_de_elementos;
+  bool trace = false;
 };
 
 parameters parse_args(int argc, char* argv[]) {
@@ -44,7 +45,10 @@ parameters parse_args(int argc, char* argv[]) {
         *++it;
         options.file_name = *it;
       }
-    } 
+    }
+    else if (*it == "-trace") {
+      if (*++it == "y") options.trace = true;
+    }
     else if (*it == "-h") {
       std::cout << "Usage: " << argv[0] << " [-ab <abe|abb>] [-init <manual|random <n>|file <n> <file_name>]" << std::endl;
       exit(0);

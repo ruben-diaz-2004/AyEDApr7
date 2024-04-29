@@ -33,32 +33,11 @@ class AB {
   const int TamRama(NodoB<key>* nodo);
   const int Altura() { return AlturaN(raiz_); }
   const int AlturaN(NodoB<key>* nodo);
+  virtual void ImprimeNiveles(std::ostream& os);
   // void RecorreN(NodoB<key>* nodo);
   // Sobrecarga del operador salida para impresión por niveles
-  friend std::ostream& operator<<(std::ostream& os, const AB<key>& arbol) {
-    std::queue<std::pair<NodoB<key>*, int>> cola;
-    NodoB<key>* nodo_actual;
-    NodoB<key>* raiz = arbol.raiz_;
-    int nivel, nivel_actual = 0;
-    cola.push(std::make_pair(raiz, 0));
-    os << "Nivel " << nivel_actual << ": ";
-    while (!cola.empty()) {
-      nodo_actual = cola.front().first;
-      nivel = cola.front().second;
-      cola.pop();
-      if (nivel > nivel_actual) {
-        os << std::endl;
-        os << "Nivel " << nivel << ": ";
-        nivel_actual = nivel;
-      }
-      if (nodo_actual != NULL) {
-        os << "[" << nodo_actual->dato_ << "] ";
-        cola.push(std::make_pair(nodo_actual->izdo_, nivel + 1));
-        cola.push(std::make_pair(nodo_actual->dcho_, nivel + 1));
-      } else {
-        os << "[.] ";
-      }
-    }
+  friend std::ostream& operator<<(std::ostream& os, AB<key>& arbol) {
+    arbol.ImprimeNiveles(os);
     return os;
   }
 
@@ -123,6 +102,37 @@ const int AB<key>::AlturaN(NodoB<key>* nodo) {
 }
 
 
+
+/**
+ * @brief Imprime un árbol por niveles
+ * @param os Stream de salida
+*/
+template <class key>
+void AB<key>::ImprimeNiveles(std::ostream& os) {
+  std::queue<std::pair<NodoB<key>*, int>> cola;
+  NodoB<key>* nodo_actual;
+  NodoB<key>* raiz = raiz_;
+  int nivel, nivel_actual = 0;
+  cola.push(std::make_pair(raiz, 0));
+  os << "Nivel " << nivel_actual << ": ";
+  while (!cola.empty()) {
+    nodo_actual = cola.front().first;
+    nivel = cola.front().second;
+    cola.pop();
+    if (nivel > nivel_actual) {
+      os << std::endl;
+      os << "Nivel " << nivel << ": ";
+      nivel_actual = nivel;
+    }
+    if (nodo_actual != NULL) {
+      os << "[" << nodo_actual->dato_ << "] ";
+      cola.push(std::make_pair(nodo_actual->izdo_, nivel + 1));
+      cola.push(std::make_pair(nodo_actual->dcho_, nivel + 1));
+    } else {
+      os << "[.] ";
+    }
+  }
+}
 
 
 

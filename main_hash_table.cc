@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
       break;
     case 2:
       std::cout << "Creando arbol avl" << std::endl;
-      arbol = new AVL<Nif>();
+      arbol = new AVL<Nif>(options.trace);
       break;
   }
 
