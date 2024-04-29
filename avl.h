@@ -43,6 +43,12 @@ class AVL : public ABB<key> {
   bool trace_;
 };
 
+
+/**
+ * @brief Inserta un nuevo nodo en el árbol AVL
+ * @param clave Clave del nuevo nodo
+ * @return true si se ha insertado correctamente, false en caso contrario
+*/
 template <class key>
 bool AVL<key>::Insertar(const key& clave) {
   if (this->Buscar(clave)) return false;
@@ -53,6 +59,13 @@ bool AVL<key>::Insertar(const key& clave) {
 }
 
 
+
+/**
+ * @brief Inserta un nuevo nodo en el árbol AVL
+ * @param nodo Nodo en el que se insertará el nuevo nodo
+ * @param nuevo Nuevo nodo a insertar
+ * @param crece Indica si el árbol ha crecido
+*/
 template <class key>
 void AVL<key>::Inserta_bal(NodoAVL<key>* &nodo, NodoAVL<key>* nuevo, bool& crece) {
   if (nodo == NULL) {
@@ -72,6 +85,11 @@ void AVL<key>::Inserta_bal(NodoAVL<key>* &nodo, NodoAVL<key>* nuevo, bool& crece
 
 
 
+/**
+ * @brief Rebalancea el árbol tras insertar un nodo en la rama izquierda
+ * @param nodo Nodo en el que se ha insertado el nuevo nodo
+ * @param crece Indica si el árbol ha crecido
+*/
 template <class key>
 void AVL<key>::insert_re_balancea_izda(NodoAVL<key>* &nodo, bool& crece) {
   switch (nodo->bal_) {
@@ -86,6 +104,7 @@ void AVL<key>::insert_re_balancea_izda(NodoAVL<key>* &nodo, bool& crece) {
       nodo->bal_ = 2;
       if (trace_) {
         std::cout << "Desbalanceo:\n";
+        std::cout << *this;
       }
       NodoAVL<key>* nodo1 = nodo->left();
       if (nodo1->bal_ == 1) {
@@ -101,6 +120,11 @@ void AVL<key>::insert_re_balancea_izda(NodoAVL<key>* &nodo, bool& crece) {
 
 
 
+/**
+ * @brief Rebalancea el árbol tras insertar un nodo en la rama derecha
+ * @param nodo Nodo en el que se ha insertado el nuevo nodo
+ * @param crece Indica si el árbol ha crecido
+*/
 template <class key>
 void AVL<key>::insert_re_balancea_dcha(NodoAVL<key>* &nodo, bool& crece) {
   switch (nodo->bal_) {
@@ -115,6 +139,7 @@ void AVL<key>::insert_re_balancea_dcha(NodoAVL<key>* &nodo, bool& crece) {
       nodo->bal_ = -2;
       if (trace_) {
         std::cout << "Desbalanceo:\n";
+        std::cout << *this;
       }
       NodoAVL<key>* nodo1 = nodo->right();
       if (nodo1->bal_ == -1) {
@@ -130,10 +155,14 @@ void AVL<key>::insert_re_balancea_dcha(NodoAVL<key>* &nodo, bool& crece) {
 
 
 
+/**
+ * @brief Realiza una rotación II en el árbol
+ * @param nodo Nodo en el que se realizará la rotación
+*/
 template <class key>
 void AVL<key>::rotacion_II(NodoAVL<key>* &nodo) {
   if (trace_) {
-    std::cout << "Rotación II en " << "[" << nodo->dato_ << "]" << std::endl;
+    std::cout << "\nRotacion II en " << "[" << nodo->dato_ << "]" << std::endl;
   }
   NodoAVL<key>* nodo1 = nodo->left();
   nodo->left() = nodo1->right();
@@ -151,10 +180,14 @@ void AVL<key>::rotacion_II(NodoAVL<key>* &nodo) {
 
 
 
+/**
+ * @brief Realiza una rotación DD en el árbol
+ * @param nodo Nodo en el que se realizará la rotación
+*/
 template <class key>
 void AVL<key>::rotacion_DD(NodoAVL<key>* &nodo) {
   if (trace_) {
-    std::cout << "Rotación DD en " << "[" << nodo->dato_ << "]" << std::endl;
+    std::cout << "\nRotacion DD en " << "[" << nodo->dato_ << "]" << std::endl;
   }
   NodoAVL<key>* nodo1 = nodo->right();
   nodo->right() = nodo1->left();
@@ -172,10 +205,14 @@ void AVL<key>::rotacion_DD(NodoAVL<key>* &nodo) {
 
 
 
+/**
+ * @brief Realiza una rotación ID en el árbol
+ * @param nodo Nodo en el que se realizará la rotación
+*/
 template <class key>
 void AVL<key>::rotacion_ID(NodoAVL<key>* &nodo) {
   if (trace_) {
-    std::cout << "Rotación ID en " << "[" << nodo->dato_ << "]" << std::endl;
+    std::cout << "\nRotacion ID en " << "[" << nodo->dato_ << "]" << std::endl;
   }
   NodoAVL<key>* nodo1 = nodo->left();
   NodoAVL<key>* nodo2 = nodo1->right();
@@ -202,10 +239,14 @@ void AVL<key>::rotacion_ID(NodoAVL<key>* &nodo) {
 
 
 
+/**
+ * @brief Realiza una rotación DI en el árbol
+ * @param nodo Nodo en el que se realizará la rotación
+*/
 template <class key>
 void AVL<key>::rotacion_DI(NodoAVL<key>* &nodo) {
   if (trace_) {
-    std::cout << "Rotación DI en " << "[" << nodo->dato_ << "]" << std::endl;
+    std::cout << "\nRotacion DI en " << "[" << nodo->dato_ << "]" << std::endl;
   }
   NodoAVL<key>* nodo1 = nodo->right();
   NodoAVL<key>* nodo2 = nodo1->left();
@@ -232,6 +273,10 @@ void AVL<key>::rotacion_DI(NodoAVL<key>* &nodo) {
 
 
 
+/**
+ * @brief Imprime el árbol por niveles
+ * @param os Stream de salida
+*/
 template <class key>
 void AVL<key>::ImprimeNiveles(std::ostream& os) {
   std::queue<std::pair<NodoAVL<key>*, int>> cola;
