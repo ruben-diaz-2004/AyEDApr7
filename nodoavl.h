@@ -18,7 +18,17 @@
 template <class key>
 class NodoAVL : public NodoB<key> {
   public:
-  NodoAVL(const key& clave) : NodoB<key>(clave) { bal_ = 0; }
+  NodoAVL(const key& clave) : NodoB<key>(clave), bal_(0) {}
+
+  NodoAVL<key>*& left() {
+    return reinterpret_cast<NodoAVL<key>*&>(NodoB<key>::dcho_);
+  }
+
+  NodoAVL<key>*& right() {
+    return reinterpret_cast<NodoAVL<key>*&>(NodoB<key>::izdo_);
+  }
+
+
   int bal_; // Factor de balanceo del nodo
 };
 

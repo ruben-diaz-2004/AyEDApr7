@@ -14,7 +14,7 @@ CXXFLAGS = -std=c++17 -g
 
 all: sort
 
-sort: main_hash_table.cc nif.cc sortfunction.cc
+sort: main_hash_table.cc nif.cc
 		$(CXX) $(CXXFLAGS) -o $@ $^
 	
 

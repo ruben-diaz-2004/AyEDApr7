@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/sort",
-            "args": ["-init", "random", "-size", "5", "-ord", "sel" ],
+            "args": ["-init", "random", "-10", "-ab", "-avl"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

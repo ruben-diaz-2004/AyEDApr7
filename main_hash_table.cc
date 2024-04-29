@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
       arbol = new ABB<Nif>();
       break;
     case 2:
+      std::cout << "Creando arbol avl" << std::endl;
       arbol = new AVL<Nif>();
       break;
   }
